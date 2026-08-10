@@ -16,7 +16,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from backend import algorithms, crud, models, schemas
+from backend import ai_service, algorithms, crud, models, schemas
 from backend.database import Base, SessionLocal, engine, get_db
 from backend.seed_data import seed_if_empty
 
@@ -267,6 +267,27 @@ def remove_course(course_id: int, db: Session = Depends(get_db)):
     course = _get_course_or_404(db, course_id)
     crud.delete_course(db, course)
     return None
+
+
+# --------------------------------------------------------------------------- #
+# AI assistant (Part 3) -- offline mock mode, no API key and no network call.
+# --------------------------------------------------------------------------- #
+@app.post("/assistant/summarize", response_model=schemas.SummaryRead, tags=["assistant"])
+def summarize(request: schemas.SummarizeRequest):
+    """Summarize raw study notes into the fixed {topic, key_points, difficulty} shape."""
+    return ai_service.summarize_notes(request.text)
+
+
+@app.get("/assistant/search", response_model=List[schemas.ScoredNote], tags=["assistant"])
+def semantic_search(
+    query: str = Query(default="", description="Free text to rank the study notes against."),
+):
+    """Rank the sample study notes by cosine similarity to `query`, most similar first.
+
+    A query containing none of the 12 vocabulary words scores every note 0.0 and the
+    notes come back in id order -- a successful response, never a division by zero.
+    """
+    return ai_service.search_notes(query)
 
 
 # --------------------------------------------------------------------------- #
