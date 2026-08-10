@@ -1,0 +1,23 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Local SQLite database (created at runtime, never committed)
+*.db
+*.sqlite
+*.sqlite3
+
+# Real environment files -- only .env.example is committed
+.env
+.env.local
+
+# Editor / OS noise
+.vscode/
+.idea/
+.DS_Store
