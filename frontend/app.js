@@ -218,6 +218,77 @@ studentForm.addEventListener("submit", async (event) => {
   }
 });
 
+/* ------------------------------------------- Part 2: algorithms engine UI */
+
+const algorithmPanel = document.getElementById("algorithm-output-panel");
+const algorithmStatus = document.getElementById("algorithm-status");
+const algorithmOutput = document.getElementById("algorithm-output");
+
+/** Reveal the algorithm output panel with a heading line and a body of text. */
+function showAlgorithmOutput(statusText, bodyText) {
+  algorithmStatus.textContent = statusText;
+  algorithmOutput.textContent = bodyText;
+  algorithmPanel.hidden = false;
+}
+
+/** Re-render the roster in the order produced by the hand-written Insertion Sort. */
+async function sortRosterBy(field) {
+  try {
+    const students = await apiRequest(`/students/sorted?by=${encodeURIComponent(field)}`);
+    renderRoster(students);
+    showAlgorithmOutput(
+      `GET /students/sorted?by=${field} - Insertion Sort, ascending.`,
+      students.map((s, i) => `${i + 1}. ${s.name} (age ${s.age})`).join("\n"),
+    );
+  } catch (error) {
+    /* banner already shown */
+  }
+}
+
+document.getElementById("sort-age-btn").addEventListener("click", () => sortRosterBy("age"));
+document.getElementById("sort-name-btn").addEventListener("click", () => sortRosterBy("name"));
+document.getElementById("reload-btn").addEventListener("click", () => {
+  algorithmPanel.hidden = true;
+  loadRoster();
+});
+
+document.getElementById("search-btn").addEventListener("click", async () => {
+  const name = document.getElementById("search-name").value.trim();
+  if (!name) {
+    showAlgorithmOutput("Binary search", "Enter an exact student name first.");
+    return;
+  }
+  try {
+    const student = await apiRequest(`/students/search?name=${encodeURIComponent(name)}`);
+    showAlgorithmOutput(
+      `GET /students/search?name=${name} - found via Binary Search.`,
+      `id: ${student.id}\nname: ${student.name}\nemail: ${student.email}\nage: ${student.age}`,
+    );
+  } catch (error) {
+    if (error.status === 404) {
+      // A miss is a normal search outcome, not a broken app -- keep it off the banner.
+      hideError();
+      showAlgorithmOutput(
+        `GET /students/search?name=${name} - 404`,
+        `No student named "${name}" is on the roster.`,
+      );
+    }
+  }
+});
+
+document.getElementById("report-btn").addEventListener("click", async () => {
+  const minAge = document.getElementById("report-min-age").value || "0";
+  try {
+    const data = await apiRequest(`/students/report?min_age=${encodeURIComponent(minAge)}`);
+    showAlgorithmOutput(
+      `GET /students/report?min_age=${minAge} - ${data.count_meeting_min_age} student(s) aged ${minAge}+.`,
+      data.report,
+    );
+  } catch (error) {
+    /* banner already shown */
+  }
+});
+
 /* ------------------------------------------------------------------ start */
 
 loadRoster();

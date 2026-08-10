@@ -16,9 +16,39 @@
     <!-- Visible failure message for any request that fails. Hidden until needed. -->
     <div id="error-banner" class="error-banner" hidden role="alert"></div>
 
+    <!-- Part 2: the algorithms engine, driven from the dashboard. -->
     <nav class="toolbar" aria-label="Roster tools">
-      <!-- Part 2 controls are added to this toolbar. -->
+      <div class="tool-group">
+        <span class="tool-label">Insertion sort</span>
+        <div class="tool-controls">
+          <button type="button" id="sort-age-btn">Sort by Age</button>
+          <button type="button" id="sort-name-btn">Sort by Name</button>
+          <button type="button" id="reload-btn">Reset order</button>
+        </div>
+      </div>
+
+      <div class="tool-group">
+        <label class="tool-label" for="search-name">Binary search by exact name</label>
+        <div class="tool-controls">
+          <input type="text" id="search-name" placeholder="Priya Iyer" />
+          <button type="button" id="search-btn">Find Student</button>
+        </div>
+      </div>
+
+      <div class="tool-group">
+        <label class="tool-label" for="report-min-age">Roster report (min age)</label>
+        <div class="tool-controls">
+          <input type="number" id="report-min-age" min="0" value="21" />
+          <button type="button" id="report-btn">Build Report</button>
+        </div>
+      </div>
     </nav>
+
+    <section class="panel" id="algorithm-output-panel" hidden aria-labelledby="algorithm-output-heading">
+      <h2 id="algorithm-output-heading">Algorithm output</h2>
+      <p id="algorithm-status" class="status-line" aria-live="polite"></p>
+      <pre id="algorithm-output" class="output-block"></pre>
+    </section>
 
     <main>
       <section class="panel" aria-labelledby="add-student-heading">
