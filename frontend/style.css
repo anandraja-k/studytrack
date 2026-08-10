@@ -1,0 +1,244 @@
+/* StudyTrack dashboard styles.
+   The box model is applied explicitly: padding, margin and a visible border on the
+   roster container and on every individual student card. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* padding and border count inside a declared width */
+}
+
+:root {
+  --ink: #1f2430;
+  --muted: #5d6577;
+  --line: #c9d1e0;
+  --accent: #3b5bdb;
+  --accent-dark: #2f48ad;
+  --surface: #ffffff;
+  --page: #eef1f7;
+  --danger: #b42318;
+  --danger-bg: #fdecea;
+}
+
+body {
+  margin: 0;
+  padding: 0 1.25rem 3rem;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  background-color: var(--page);
+  line-height: 1.5;
+}
+
+/* ------------------------------------------------------------------ header */
+.page-header {
+  margin: 0 auto 1.25rem;
+  padding: 1.75rem 1.5rem;
+  max-width: 1100px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ------------------------------------------------------------ error banner */
+.error-banner {
+  max-width: 1100px;
+  margin: 0 auto 1.25rem;
+  padding: 0.9rem 1.1rem;
+  border: 2px solid var(--danger);
+  border-radius: 8px;
+  background-color: var(--danger-bg);
+  color: var(--danger);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- toolbar */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-end;
+  max-width: 1100px;
+  margin: 0 auto 1.25rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background-color: var(--surface);
+}
+
+.toolbar:empty {
+  display: none;
+}
+
+/* ----------------------------------------------------------------- panels */
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.panel {
+  margin: 0 0 1.5rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background-color: var(--surface);
+}
+
+.panel h2 {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+}
+
+.status-line {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+
+/* ------------------------------------------------------------- add-student */
+.student-form {
+  display: grid;
+  grid-template-columns: auto minmax(9rem, 1fr) auto minmax(11rem, 1fr) auto 6rem auto;
+  gap: 0.6rem 0.75rem;
+  align-items: center;
+}
+
+.student-form label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  padding: 0.5rem 0.6rem;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+  background-color: #fff;
+  color: var(--ink);
+  width: 100%;
+}
+
+button {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background-color: #f3f5fa;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e7ebf5;
+}
+
+.primary-btn {
+  border-color: var(--accent-dark);
+  background-color: var(--accent);
+  color: #fff;
+}
+
+.primary-btn:hover {
+  background-color: var(--accent-dark);
+}
+
+.danger-btn {
+  border-color: var(--danger);
+  color: var(--danger);
+  background-color: #fff;
+}
+
+.danger-btn:hover {
+  background-color: var(--danger-bg);
+}
+
+/* ------------------------------------------------------------ roster list */
+/* The container itself carries visible box-model spacing. */
+.roster-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1rem;
+  margin: 0.5rem 0 0;
+  padding: 1rem;
+  border: 2px dashed var(--line);
+  border-radius: 10px;
+  min-height: 5rem;
+}
+
+/* Every individual card also carries its own padding, margin and border. */
+.student-card {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--accent);
+  border-radius: 8px;
+  background-color: #fbfcfe;
+}
+
+.student-card h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+.card-email,
+.card-age {
+  margin: 0 0 0.35rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  word-break: break-word;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.card-actions .age-input {
+  width: 5.5rem;
+}
+
+/* --------------------------------------------------------------- footer */
+.page-footer {
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------ responsive */
+/* Below 600px the multi-column card grid collapses to a single column. */
+@media (max-width: 600px) {
+  .roster-list {
+    grid-template-columns: 1fr;
+  }
+
+  .student-form {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyTrack Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="page-header">
+      <h1>StudyTrack Dashboard</h1>
+      <p class="tagline">Trainee Enablement &middot; roster management, algorithms engine, AI helper</p>
+    </header>
+
+    <!-- Visible failure message for any request that fails. Hidden until needed. -->
+    <div id="error-banner" class="error-banner" hidden role="alert"></div>
+
+    <nav class="toolbar" aria-label="Roster tools">
+      <!-- Part 2 controls are added to this toolbar. -->
+    </nav>
+
+    <main>
+      <section class="panel" aria-labelledby="add-student-heading">
+        <h2 id="add-student-heading">Add a student</h2>
+        <form id="student-form" class="student-form">
+          <label for="student-name">Name</label>
+          <input type="text" id="student-name" name="name" placeholder="Full name" required />
+
+          <label for="student-email">Email</label>
+          <input type="text" id="student-email" name="email" placeholder="name@example.com" required />
+
+          <label for="student-age">Age</label>
+          <input type="number" id="student-age" name="age" min="1" placeholder="20" required />
+
+          <button type="submit" class="primary-btn">Add student</button>
+        </form>
+        <p id="form-status" class="status-line" aria-live="polite"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="roster-heading">
+        <h2 id="roster-heading">Roster</h2>
+        <p id="roster-status" class="status-line" aria-live="polite">Loading roster&hellip;</p>
+        <!-- One student card per record is rendered into this container by app.js. -->
+        <section id="roster-list" class="roster-list" aria-label="Student cards"></section>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>StudyTrack &mdash; FastAPI + SQLAlchemy backend, plain HTML/CSS/JS frontend, one process.</p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
