@@ -79,6 +79,49 @@ body {
   display: none;
 }
 
+.tool-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tool-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.tool-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tool-controls input[type="text"] {
+  min-width: 11rem;
+}
+
+.tool-controls input[type="number"] {
+  width: 5.5rem;
+}
+
+/* ---------------------------------------------------------- output blocks */
+.output-block {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background-color: #f7f9fc;
+  font-family: "Cascadia Mono", Consolas, "Courier New", monospace;
+  font-size: 0.88rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
 /* ----------------------------------------------------------------- panels */
 main {
   max-width: 1100px;
