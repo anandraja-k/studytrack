@@ -289,6 +289,90 @@ document.getElementById("report-btn").addEventListener("click", async () => {
   }
 });
 
+/* ------------------------------------------------ Part 3: AI Helper panel */
+
+const summaryOutput = document.getElementById("summary-output");
+const notesResults = document.getElementById("notes-results");
+
+document.getElementById("summarize-btn").addEventListener("click", async () => {
+  const text = document.getElementById("notes-input").value;
+  try {
+    const summary = await apiRequest("/assistant/summarize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+
+    summaryOutput.replaceChildren();
+
+    const topic = document.createElement("p");
+    topic.textContent = `Topic: ${summary.topic}`;
+    topic.className = "ai-topic";
+    summaryOutput.appendChild(topic);
+
+    const difficulty = document.createElement("p");
+    difficulty.textContent = `Difficulty: ${summary.difficulty}`;
+    difficulty.className = "ai-difficulty";
+    summaryOutput.appendChild(difficulty);
+
+    const pointsHeading = document.createElement("p");
+    pointsHeading.textContent = summary.key_points.length
+      ? "Key points:"
+      : "Key points: (none - the notes were empty)";
+    summaryOutput.appendChild(pointsHeading);
+
+    if (summary.key_points.length) {
+      const list = document.createElement("ul");
+      summary.key_points.forEach((point) => {
+        const item = document.createElement("li");
+        item.textContent = point;
+        list.appendChild(item);
+      });
+      summaryOutput.appendChild(list);
+    }
+
+    summaryOutput.hidden = false;
+  } catch (error) {
+    /* banner already shown */
+  }
+});
+
+document.getElementById("notes-search-btn").addEventListener("click", async () => {
+  const query = document.getElementById("notes-query").value;
+  try {
+    const ranked = await apiRequest(`/assistant/search?query=${encodeURIComponent(query)}`);
+
+    notesResults.replaceChildren();
+
+    const heading = document.createElement("p");
+    heading.textContent = ranked.some((note) => note.score > 0)
+      ? `${ranked.length} notes ranked by cosine similarity:`
+      : `${ranked.length} notes, all scoring 0.00 (no vocabulary word matched):`;
+    notesResults.appendChild(heading);
+
+    const list = document.createElement("ol");
+    ranked.forEach((note) => {
+      const item = document.createElement("li");
+
+      const score = document.createElement("span");
+      score.className = "note-score";
+      score.textContent = note.score.toFixed(4);
+      item.appendChild(score);
+
+      const body = document.createElement("span");
+      body.textContent = ` (note ${note.id}) ${note.text}`;
+      item.appendChild(body);
+
+      list.appendChild(item);
+    });
+    notesResults.appendChild(list);
+
+    notesResults.hidden = false;
+  } catch (error) {
+    /* banner already shown */
+  }
+});
+
 /* ------------------------------------------------------------------ start */
 
 loadRoster();
