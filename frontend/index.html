@@ -82,22 +82,25 @@
           Runs in offline mock mode &mdash; deterministic, no API key, no network call.
         </p>
 
-        <div class="ai-block">
-          <label class="tool-label" for="notes-input">Summarize study notes</label>
-          <textarea id="notes-input" rows="5" placeholder="Paste raw study notes here..."></textarea>
-          <div class="tool-controls">
-            <button type="button" id="summarize-btn" class="primary-btn">Summarize</button>
+        <!-- Two columns side by side on wide screens, stacked on narrow ones. -->
+        <div class="panel-ai-grid">
+          <div class="ai-block">
+            <label class="tool-label" for="notes-input">Summarize study notes</label>
+            <textarea id="notes-input" rows="5" placeholder="Paste raw study notes here..."></textarea>
+            <div class="tool-controls">
+              <button type="button" id="summarize-btn" class="primary-btn">Summarize</button>
+            </div>
+            <div id="summary-output" class="ai-output" hidden></div>
           </div>
-          <div id="summary-output" class="ai-output" hidden></div>
-        </div>
 
-        <div class="ai-block">
-          <label class="tool-label" for="notes-query">Search the study notes</label>
-          <div class="tool-controls">
-            <input type="text" id="notes-query" placeholder="binary search algorithm" />
-            <button type="button" id="notes-search-btn">Search Notes</button>
+          <div class="ai-block">
+            <label class="tool-label" for="notes-query">Search the study notes</label>
+            <div class="tool-controls">
+              <input type="text" id="notes-query" placeholder="binary search algorithm" />
+              <button type="button" id="notes-search-btn">Search Notes</button>
+            </div>
+            <div id="notes-results" class="ai-output" hidden></div>
           </div>
-          <div id="notes-results" class="ai-output" hidden></div>
         </div>
       </section>
     </main>

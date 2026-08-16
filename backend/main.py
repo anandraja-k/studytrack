@@ -294,4 +294,21 @@ def semantic_search(
 # Static dashboard -- mounted LAST so it never shadows an API route.
 # Opening http://localhost:8000/ serves frontend/index.html.
 # --------------------------------------------------------------------------- #
-app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="static")
+class RevalidatingStaticFiles(StaticFiles):
+    """StaticFiles that asks the browser to revalidate before reusing a file.
+
+    Starlette sends only ETag and Last-Modified, with no Cache-Control. Browsers
+    then fall back to heuristic caching and may keep serving an old index.html or
+    style.css for hours after an edit -- which shows up as the dashboard loading
+    with stale markup or styling. "no-cache" still lets the browser keep its copy
+    and still allows a cheap 304 response; it just forbids using that copy without
+    checking with the server first.
+    """
+
+    def file_response(self, *args, **kwargs):
+        response = super().file_response(*args, **kwargs)
+        response.headers["Cache-Control"] = "no-cache"
+        return response
+
+
+app.mount("/", RevalidatingStaticFiles(directory=FRONTEND_DIR, html=True), name="static")

@@ -11,47 +11,69 @@
 :root {
   --ink: #1f2430;
   --muted: #5d6577;
-  --line: #c9d1e0;
+  --line: #d5dbe6;
+  --line-strong: #b9c2d4;
   --accent: #3b5bdb;
   --accent-dark: #2f48ad;
+  --accent-soft: #eef2ff;
   --surface: #ffffff;
+  --surface-alt: #f7f9fc;
   --page: #eef1f7;
   --danger: #b42318;
   --danger-bg: #fdecea;
+  --shadow: 0 1px 2px rgba(31, 36, 48, 0.06);
+  /* Wide enough to fill a normal laptop or desktop screen rather than sitting in
+     a narrow column, but still capped so text lines never run absurdly long. */
+  --content-width: 1720px;
+  --gutter: 2rem;
 }
 
 body {
   margin: 0;
-  padding: 0 1.25rem 3rem;
+  padding: 0 var(--gutter) 3rem;
   font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: var(--ink);
   background-color: var(--page);
   line-height: 1.5;
 }
 
+/* A visible focus ring on every control, for keyboard users. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ------------------------------------------------------------------ header */
+/* Full-bleed bar: the negative margins cancel the body gutter so the white strip
+   reaches both screen edges, while the inner padding keeps the title lined up
+   with the panels below it. */
 .page-header {
-  margin: 0 auto 1.25rem;
-  padding: 1.75rem 1.5rem;
-  max-width: 1100px;
+  margin: 0 calc(var(--gutter) * -1) 1.5rem;
+  padding: 1.75rem var(--gutter) 1.5rem;
+  background-color: var(--surface);
   border-bottom: 3px solid var(--accent);
 }
 
 .page-header h1 {
-  margin: 0;
+  max-width: var(--content-width);
+  margin: 0 auto;
   font-size: 2rem;
   letter-spacing: -0.02em;
 }
 
 .tagline {
-  margin: 0.35rem 0 0;
+  max-width: var(--content-width);
+  margin: 0.35rem auto 0;
   color: var(--muted);
   font-size: 0.95rem;
 }
 
 /* ------------------------------------------------------------ error banner */
 .error-banner {
-  max-width: 1100px;
+  max-width: var(--content-width);
   margin: 0 auto 1.25rem;
   padding: 0.9rem 1.1rem;
   border: 2px solid var(--danger);
@@ -65,31 +87,34 @@ body {
 .toolbar {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 1.5rem 2.5rem;
   align-items: flex-end;
-  max-width: 1100px;
+  max-width: var(--content-width);
   margin: 0 auto 1.25rem;
-  padding: 1rem 1.25rem;
+  padding: 1.1rem 1.5rem;
   border: 1px solid var(--line);
   border-radius: 10px;
   background-color: var(--surface);
-}
-
-.toolbar:empty {
-  display: none;
+  box-shadow: var(--shadow);
 }
 
 .tool-group {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
+}
+
+/* Let the search group take up the slack on wide screens so the three groups
+   spread across the bar instead of bunching up on the left. */
+.tool-group:nth-child(2) {
+  flex: 1 1 20rem;
 }
 
 .tool-label {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: var(--muted);
 }
 
@@ -102,42 +127,51 @@ body {
 
 .tool-controls input[type="text"] {
   min-width: 11rem;
+  max-width: 26rem; /* stops the search box stretching across a wide screen */
+  flex: 1 1 12rem;
 }
 
 .tool-controls input[type="number"] {
   width: 5.5rem;
+  flex: 0 0 auto;
 }
 
 /* ---------------------------------------------------------- output blocks */
 .output-block {
   margin: 0;
   padding: 0.9rem 1rem;
+  max-height: 24rem;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background-color: #f7f9fc;
+  background-color: var(--surface-alt);
   font-family: "Cascadia Mono", Consolas, "Courier New", monospace;
   font-size: 0.88rem;
+  line-height: 1.65;
   white-space: pre-wrap;
   word-break: break-word;
-  overflow-x: auto;
+  overflow: auto;
 }
 
 /* ----------------------------------------------------------------- panels */
 main {
-  max-width: 1100px;
+  max-width: var(--content-width);
   margin: 0 auto;
 }
 
 .panel {
-  margin: 0 0 1.5rem;
+  max-width: var(--content-width);
+  margin: 0 auto 1.5rem;
   padding: 1.25rem 1.5rem 1.5rem;
   border: 1px solid var(--line);
   border-radius: 10px;
   background-color: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 .panel h2 {
   margin: 0 0 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line);
   font-size: 1.2rem;
 }
 
@@ -149,10 +183,13 @@ main {
 }
 
 /* ------------------------------------------------------------- add-student */
+/* The upper bounds keep the inputs a sensible size on a wide screen instead of
+   letting them stretch the full width of the panel. */
 .student-form {
   display: grid;
-  grid-template-columns: auto minmax(9rem, 1fr) auto minmax(11rem, 1fr) auto 6rem auto;
-  gap: 0.6rem 0.75rem;
+  grid-template-columns: auto minmax(9rem, 22rem) auto minmax(11rem, 26rem) auto 6rem auto;
+  justify-content: start;
+  gap: 0.6rem 0.9rem;
   align-items: center;
 }
 
@@ -162,32 +199,42 @@ main {
   color: var(--muted);
 }
 
+/* --------------------------------------------------------- form controls */
 input[type="text"],
 input[type="number"],
 textarea {
-  padding: 0.5rem 0.6rem;
+  width: 100%;
   margin: 0;
-  border: 1px solid var(--line);
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line-strong);
   border-radius: 6px;
   font: inherit;
-  background-color: #fff;
   color: var(--ink);
-  width: 100%;
+  background-color: #fff;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  border-color: var(--accent);
 }
 
 button {
   padding: 0.5rem 0.9rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: 6px;
   background-color: #f3f5fa;
   color: var(--ink);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 button:hover {
   background-color: #e7ebf5;
+  border-color: var(--muted);
 }
 
 .primary-btn {
@@ -198,6 +245,7 @@ button:hover {
 
 .primary-btn:hover {
   background-color: var(--accent-dark);
+  border-color: var(--accent-dark);
 }
 
 .danger-btn {
@@ -208,42 +256,65 @@ button:hover {
 
 .danger-btn:hover {
   background-color: var(--danger-bg);
+  border-color: var(--danger);
 }
 
 /* ------------------------------------------------------------ roster list */
-/* The container itself carries visible box-model spacing. */
+/* The container itself carries visible box-model spacing. A wider page simply
+   fits more columns, because the grid auto-fills tracks of at least 280px. */
 .roster-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
   margin: 0.5rem 0 0;
   padding: 1rem;
-  border: 2px dashed var(--line);
+  border: 2px dashed var(--line-strong);
   border-radius: 10px;
   min-height: 5rem;
 }
 
 /* Every individual card also carries its own padding, margin and border. */
 .student-card {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 1rem;
   border: 1px solid var(--line);
   border-left: 5px solid var(--accent);
   border-radius: 8px;
   background-color: #fbfcfe;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.student-card:hover {
+  border-color: var(--line-strong);
+  border-left-color: var(--accent);
+  box-shadow: 0 2px 6px rgba(31, 36, 48, 0.10);
 }
 
 .student-card h3 {
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.35rem;
   font-size: 1.05rem;
 }
 
-.card-email,
-.card-age {
-  margin: 0 0 0.35rem;
+.card-email {
+  margin: 0 0 0.5rem;
   font-size: 0.9rem;
   color: var(--muted);
   word-break: break-word;
+}
+
+/* Age reads as a small badge rather than another line of grey text. */
+.card-age {
+  align-self: flex-start;
+  margin: 0;
+  padding: 0.1rem 0.55rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background-color: var(--accent-soft);
+  color: var(--accent-dark);
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
 .card-actions {
@@ -251,11 +322,23 @@ button:hover {
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
-  margin-top: 0.75rem;
+  margin-top: auto; /* pins the controls to the bottom, so cards line up */
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+/* The action row needs its own top spacing when the card content is short. */
+.card-age + .card-actions {
+  margin-top: 0.85rem;
 }
 
 .card-actions .age-input {
   width: 5.5rem;
+}
+
+.card-actions button {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
 }
 
 /* ------------------------------------------------------------- AI Helper */
@@ -265,7 +348,8 @@ button:hover {
   font-size: 0.88rem;
 }
 
-.ai-block {
+/* Side by side on wide screens: summarize on the left, note search on the right. */
+.panel .ai-block {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -273,7 +357,7 @@ button:hover {
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background-color: #fbfcfe;
+  background-color: var(--surface-alt);
 }
 
 .ai-block:last-child {
@@ -329,7 +413,7 @@ button:hover {
 
 /* --------------------------------------------------------------- footer */
 .page-footer {
-  max-width: 1100px;
+  max-width: var(--content-width);
   margin: 2rem auto 0;
   padding-top: 1rem;
   border-top: 1px solid var(--line);
@@ -337,9 +421,45 @@ button:hover {
   font-size: 0.85rem;
 }
 
+.page-footer p {
+  margin: 0;
+}
+
 /* ------------------------------------------------------------ responsive */
+/* From 1100px up there is room to run the two AI blocks as two columns. */
+@media (min-width: 1100px) {
+  .panel-ai-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --gutter: 1.25rem;
+  }
+
+  .toolbar {
+    gap: 1rem;
+  }
+
+  .tool-group,
+  .tool-group:nth-child(2) {
+    flex: 1 1 100%;
+  }
+}
+
 /* Below 600px the multi-column card grid collapses to a single column. */
 @media (max-width: 600px) {
+  :root {
+    --gutter: 0.9rem;
+  }
+
+  body {
+    padding-bottom: 2.5rem;
+  }
+
   .roster-list {
     grid-template-columns: 1fr;
   }
@@ -352,5 +472,13 @@ button:hover {
   .toolbar {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .panel {
+    padding: 1rem 1.1rem 1.25rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.6rem;
   }
 }
